@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 const MapScreen = (props) => {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'#e67e22'}}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'#f2f2f2'}}>
      <Text>MapScreen</Text>
    </View>
   )
