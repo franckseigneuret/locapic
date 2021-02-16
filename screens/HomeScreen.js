@@ -8,6 +8,7 @@ const HomeScreen = (props) => {
     <ImageBackground source={require('../assets/home.jpg')} style={styles.container}>
       <Input
         placeholder='John'
+        containerStyle={styles.name}
         leftIcon={
           <Ionicons
             name='person'
@@ -18,7 +19,7 @@ const HomeScreen = (props) => {
       />
 
       <Button
-        title="Go top Map"
+        title="Go to Map"
         icon={
           <Ionicons
             name='arrow-forward-outline'
@@ -31,7 +32,7 @@ const HomeScreen = (props) => {
         buttonStyle={{
           backgroundColor: '#3e88d6'
         }}
-        onPress={() => props.navigation.navigate('Main')}
+        onPress={() => props.navigation.navigate('Main', { screen: 'Map' })}
       />
     </ImageBackground>
   )
@@ -44,7 +45,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  name: {
+    width: '70%',
+    marginBottom: 25,
+  }
 });
 
 export default HomeScreen;
