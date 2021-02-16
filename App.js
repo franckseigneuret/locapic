@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 
 import HomeScreen from './screens/HomeScreen'
 import MapScreen from './screens/MapScreen'
@@ -22,21 +22,24 @@ const Main = () => {
           tabBarIcon: ({ color }) => {
             let iconName;
 
-            if (route.name == 'Home') {
-              iconName = 'ios-home';
-            } else if (route.name == 'PagesStack') {
-              iconName = 'ios-heart';
+            if (route.name == 'Map') {
+              iconName = 'send';
+              return <Feather name={iconName} size={25} color={color} />;
+            } else if (route.name == 'Chat') {
+              iconName = 'chatbubbles';
+              return <Ionicons name={iconName} size={25} color={color} />;
             }
 
-            return <Ionicons name={iconName} size={25} color={color} />;
           },
         })}
         tabBarOptions={{
-          activeTintColor: '#0984e3',
-          inactiveTintColor: '#dfe6e9',
+          inactiveBackgroundColor: '#130f40',
+          activeBackgroundColor: '#130f40',
+          activeTintColor: '#eb4d4b',
+          inactiveTintColor: '#fff',
         }}>
-        <Tab.Screen name="MapScreen" component={MapScreen} />
-        <Tab.Screen name="ChatScreen" component={ChatScreen} />
+        <Tab.Screen name="Map" component={MapScreen} />
+        <Tab.Screen name="Chat" component={ChatScreen} />
       </Tab.Navigator>
 
   )
