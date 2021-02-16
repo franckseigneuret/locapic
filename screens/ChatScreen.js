@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { ListItem, Button, Input } from 'react-native-elements';
-import { Ionicons, EvilIcons } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 
 const list = [
   {
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   name: {
-    // width: '70%',
     marginBottom: 25,
   }
 });

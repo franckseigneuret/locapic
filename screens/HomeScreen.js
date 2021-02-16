@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 const HomeScreen = (props) => {
+  const [pseudo, setPseudo] = useState('')
+
   return (
     <ImageBackground source={require('../assets/home.jpg')} style={styles.container}>
       <Input
@@ -16,6 +18,7 @@ const HomeScreen = (props) => {
             color='#da5951'
           />
         }
+        onChangeText={(e) => setPseudo(e)}
       />
 
       <Button
