@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons';
 
 const HomeScreen = (props) => {
@@ -35,7 +36,12 @@ const HomeScreen = (props) => {
         buttonStyle={{
           backgroundColor: '#3e88d6'
         }}
-        onPress={() => props.navigation.navigate('Main', { screen: 'Map' })}
+        onPress={
+          () => {
+            props.onSubmitPseudo(pseudo)
+            props.navigation.navigate('Main', { screen: 'Map' })
+          }
+        }
       />
     </ImageBackground>
   )
@@ -54,4 +60,15 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeScreen;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitPseudo: function (pseudo) {
+      dispatch({ type: 'savePseudo', pseudo: pseudo })
+    },
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(HomeScreen)
