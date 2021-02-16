@@ -33,10 +33,11 @@ const Main = () => {
           },
         })}
         tabBarOptions={{
-          inactiveBackgroundColor: '#130f40',
-          activeBackgroundColor: '#130f40',
           activeTintColor: '#eb4d4b',
           inactiveTintColor: '#fff',
+          style: {
+            backgroundColor: '#130f40'
+          }
         }}>
         <Tab.Screen name="Map" component={MapScreen} />
         <Tab.Screen name="Chat" component={ChatScreen} />
