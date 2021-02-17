@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { Button, Overlay, Input } from 'react-native-elements';
+import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -48,7 +49,10 @@ const MapScreen = (props) => {
     dataMarker.description = description
 
     setListPOI([...listPOI, dataMarker])
+    props.onSubmitPOI(dataMarker) // mapDispatchToProps
     setAddPOI(!addPOI) // inverse l'état du bouton POI
+    setTitle('')
+    setDescription('')
   }
 
   return (
@@ -64,9 +68,8 @@ const MapScreen = (props) => {
           if (addPOI) {
             setVisible(true)
             // réinitialiser le title + description mais pb latence
-            // setTitle('')
-            // setDescription('')
-            console.log('coordinate', e.nativeEvent.coordinate)
+
+            // console.log('coordinate', e.nativeEvent.coordinate)
             setnewCoordPOI(e.nativeEvent.coordinate)
           }
         }}
@@ -121,4 +124,16 @@ const MapScreen = (props) => {
     </View>
   )
 }
-export default MapScreen;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitPOI: function (poi) {
+      dispatch({ type: 'savePOI', poi: poi })
+    },
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(MapScreen)
