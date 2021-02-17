@@ -1,17 +1,14 @@
 export default function (poiList = [], action) {
 
   if (action.type == 'savePOI') {
-    var poiListCopy = [...poiList]
+    let poiListCopy = [...poiList]
     poiListCopy.push(action.poi)
-    // console.log(poiListCopy)
+
     return poiListCopy
 
   } else if (action.type == 'deletePOI') {
-    // console.log('action ==', action.poiTitle)
-    var poiListCopy = [...poiList]
-    poiListCopy = poiListCopy.filter((e) => action.poiTitle !== e.title)
-    // console.log(poiListCopy)
-    return poiListCopy
+
+    return poiList.filter((e) => action.poiTitle !== e.title)
 
   } else {
     return poiList

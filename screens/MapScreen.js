@@ -9,7 +9,6 @@ import * as Location from 'expo-location';
 
 const MapScreen = (props) => {
   const [addPOI, setAddPOI] = useState(false);
-  const [listPOI, setListPOI] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const [currentLatitude, setCurrentLatitude] = useState(0)
   const [currentLongitude, setCurrentLongitude] = useState(0)
@@ -18,7 +17,7 @@ const MapScreen = (props) => {
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [newCoordPOI, setnewCoordPOI] = useState({})
+  const [newCoordPOI, setNewCoordPOI] = useState({})
 
   useEffect(() => {
     (async () => {
@@ -48,9 +47,10 @@ const MapScreen = (props) => {
     dataMarker.title = title
     dataMarker.description = description
 
-    setListPOI([...listPOI, dataMarker])
-    props.onSubmitPOI(dataMarker) // mapDispatchToProps
+    props.addPOI(dataMarker) // mapDispatchToProps
     setAddPOI(!addPOI) // inverse l'état du bouton POI
+    
+    // réinitialiser le title + description ... mais pb latence
     setTitle('')
     setDescription('')
   }
@@ -67,16 +67,15 @@ const MapScreen = (props) => {
         onPress={(e) => {
           if (addPOI) {
             setVisible(true)
-            // réinitialiser le title + description mais pb latence
 
             // console.log('coordinate', e.nativeEvent.coordinate)
-            setnewCoordPOI(e.nativeEvent.coordinate)
+            setNewCoordPOI(e.nativeEvent.coordinate)
           }
         }}
       >
         <Marker coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} title="Hello" description="I am here !" />
         {
-          listPOI.map((marker, i) => {
+          props.poiList.map((marker, i) => {
             let infosProps = {}
             if (marker.title.length) {
               infosProps.title = marker.title
@@ -125,15 +124,21 @@ const MapScreen = (props) => {
   )
 }
 
+function mapStateToProps(state) {
+  return {
+    poiList: state.poi,
+  }
+}
+
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitPOI: function (poi) {
+    addPOI: function (poi) {
       dispatch({ type: 'savePOI', poi: poi })
     },
   }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(MapScreen)
