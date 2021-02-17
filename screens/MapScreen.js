@@ -43,15 +43,18 @@ const MapScreen = (props) => {
           longitudeDelta: 0.0421,
         }}
         onPress={(e) => {
-          setListPOI([...listPOI, e.nativeEvent.coordinate])
-          console.log(listPOI)
+          if(addPOI) {
+            setListPOI([...listPOI, e.nativeEvent.coordinate])
+            console.log(listPOI)
+            setAddPOI(!addPOI)
+          }
         }
         }
       >
         <Marker coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} title="Hello" description="I am here !" />
         {
           listPOI.map((marker, i) => (
-            <Marker key={i} coordinate={marker} title="Hello" />
+            <Marker key={i} coordinate={marker} pinColor={'blue'} />
           ))
         }
       </MapView>
@@ -61,6 +64,7 @@ const MapScreen = (props) => {
           <Ionicons name="ios-location-sharp" size={24} color="#FFF" />
         }
         iconLeft
+        disabled={addPOI}
         type="solid"
         buttonStyle={{
           backgroundColor: '#da5951',
