@@ -63,6 +63,9 @@ const MapScreen = (props) => {
         onPress={(e) => {
           if (addPOI) {
             setVisible(true)
+            // réinitialiser le title + description mais pb latence
+            // setTitle('')
+            // setDescription('')
             console.log('coordinate', e.nativeEvent.coordinate)
             setnewCoordPOI(e.nativeEvent.coordinate)
           }
@@ -70,27 +73,34 @@ const MapScreen = (props) => {
       >
         <Marker coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} title="Hello" description="I am here !" />
         {
-          listPOI.map((marker, i) => (
-            <Marker key={i} coordinate={marker} pinColor={'blue'}
-              title={marker.title} description={marker.description} />
-          ))
+          listPOI.map((marker, i) => {
+            let infosProps = {}
+            if (marker.title.length) {
+              infosProps.title = marker.title
+            }
+            if (marker.description.length) {
+              infosProps.description = marker.description
+            }
+            return <Marker key={i} pinColor={'blue'}
+              coordinate={marker}
+              {...infosProps}
+            />
+          })
         }
       </MapView>
 
       <Overlay isVisible={visible}>
-        <View>
-          <Text>Renseignez ce POI</Text>
+        <View style={{ height: 500, width: 300 }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 10 }}>Renseignez ce nouveau POI</Text>
           <Input
             placeholder='Titre'
             onChangeText={(titleContent) => setTitle(titleContent)}
-            containerStyle={{ width: 200 }}
           />
           <Input
             placeholder='Description'
             onChangeText={(descContent) => setDescription(descContent)}
-            containerStyle={{ width: 200 }}
           />
-          <Button title="ok" onPress={() => handleOverlay()} />
+          <Button title="Ajouter POI" onPress={() => handleOverlay()} />
         </View>
       </Overlay>
 
