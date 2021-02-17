@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, Text } from 'react-native';
+import { Button, Overlay, Input } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -12,6 +12,12 @@ const MapScreen = (props) => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [currentLatitude, setCurrentLatitude] = useState(0)
   const [currentLongitude, setCurrentLongitude] = useState(0)
+
+  // Overlay pour renseigner tilte + description d'un nouveau POI
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [newCoordPOI, setnewCoordPOI] = useState({})
 
   useEffect(() => {
     (async () => {
@@ -33,6 +39,18 @@ const MapScreen = (props) => {
     })();
   }, []);
 
+  const handleOverlay = () => {
+    setVisible(false)   // ferme overlay
+
+    // implémente un objet temporaire qui s'ajoutera ensuite au litsPOI
+    let dataMarker = newCoordPOI
+    dataMarker.title = title
+    dataMarker.description = description
+
+    setListPOI([...listPOI, dataMarker])
+    setAddPOI(!addPOI) // inverse l'état du bouton POI
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <MapView style={{ flex: 1, width: '100%' }}
@@ -43,21 +61,39 @@ const MapScreen = (props) => {
           longitudeDelta: 0.0421,
         }}
         onPress={(e) => {
-          if(addPOI) {
-            setListPOI([...listPOI, e.nativeEvent.coordinate])
-            console.log(listPOI)
-            setAddPOI(!addPOI)
+          if (addPOI) {
+            setVisible(true)
+            console.log('coordinate', e.nativeEvent.coordinate)
+            setnewCoordPOI(e.nativeEvent.coordinate)
           }
-        }
-        }
+        }}
       >
         <Marker coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} title="Hello" description="I am here !" />
         {
           listPOI.map((marker, i) => (
-            <Marker key={i} coordinate={marker} pinColor={'blue'} />
+            <Marker key={i} coordinate={marker} pinColor={'blue'}
+              title={marker.title} description={marker.description} />
           ))
         }
       </MapView>
+
+      <Overlay isVisible={visible}>
+        <View>
+          <Text>Renseignez ce POI</Text>
+          <Input
+            placeholder='Titre'
+            onChangeText={(titleContent) => setTitle(titleContent)}
+            containerStyle={{ width: 200 }}
+          />
+          <Input
+            placeholder='Description'
+            onChangeText={(descContent) => setDescription(descContent)}
+            containerStyle={{ width: 200 }}
+          />
+          <Button title="ok" onPress={() => handleOverlay()} />
+        </View>
+      </Overlay>
+
       <Button
         title="add POI"
         icon={
