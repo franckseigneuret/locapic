@@ -4,6 +4,12 @@ import { ListItem, Button, Input } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { EvilIcons } from '@expo/vector-icons';
 
+
+import socketIOClient from "socket.io-client";
+var socket = socketIOClient("http://172.17.1.161:3000");
+
+
+
 const list = [
   {
     name: 'Amy Farha',
