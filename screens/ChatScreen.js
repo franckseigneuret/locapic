@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { ListItem, Button, Input } from 'react-native-elements';
 import { connect } from 'react-redux'
@@ -9,30 +9,24 @@ import socketIOClient from "socket.io-client";
 var socket = socketIOClient("http://172.17.1.161:3000");
 
 
-
-const list = [
-  {
-    name: 'Amy Farha',
-    subtitle: 'Vice President'
-  },
-  {
-    name: 'Chris Jackson',
-    subtitle: 'Vice Chairman'
-  },
-]
-
-
 const ChatScreen = (props) => {
+
+  const [currentMessage, setCurrentMessage] = useState('')
+  const [listMessage, setListMessage] = useState([])
+
+  socket.on('sendMessageToAll', function (msg) {
+    setListMessage([...listMessage, msg])
+  })
+
   return (
     <View style={{ flex: 1, justifyContent: 'space-between', backgroundColor: '#f2f2f2' }}>
       <View style={{ width: '100%', marginTop: 55 }}>
-      <Text style={{padding:15}}>Hello {props.pseudo}</Text>
+        <Text style={{ padding: 15 }}>Hello {props.pseudo}</Text>
         {
-          list.map((l, i) => (
+          listMessage.map((item, i) => (
             <ListItem key={i} bottomDivider style={{ width: '100%' }}>
               <ListItem.Content>
-                <ListItem.Title>{l.name}</ListItem.Title>
-                <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+                <ListItem.Title>{item}</ListItem.Title>
               </ListItem.Content>
             </ListItem>
           ))
@@ -46,6 +40,8 @@ const ChatScreen = (props) => {
         <Input
           placeholder='Your message'
           containerStyle={styles.name}
+          onChangeText={(e) => setCurrentMessage(e)}
+          value={currentMessage}
         />
 
         <Button
@@ -58,7 +54,10 @@ const ChatScreen = (props) => {
           buttonStyle={{
             backgroundColor: '#da5951'
           }}
-          onPress={() => props.navigation.navigate('Main', { screen: 'Map' })}
+          onPress={() => {
+            socket.emit("sendMessage", currentMessage)
+            setCurrentMessage('')
+          }}
         />
 
       </KeyboardAvoidingView>
