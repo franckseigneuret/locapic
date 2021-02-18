@@ -18,7 +18,7 @@ const ChatScreen = (props) => {
     socket.on('sendMessageToAll', function (msg) {
       setListMessage([...listMessage, msg])
     })
-  }, [])
+  }, [listMessage])
 
   return (
     <View style={{ flex: 1, justifyContent: 'space-between', backgroundColor: '#f2f2f2' }}>

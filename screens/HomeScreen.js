@@ -39,7 +39,7 @@ const HomeScreen = (props) => {
         onPress={
           () => {
             props.onSubmitPseudo(pseudo)
-            props.navigation.navigate('Main', { screen: 'Map' })
+            props.navigation.navigate('Main', { screen: 'Chat' })
           }
         }
       />
