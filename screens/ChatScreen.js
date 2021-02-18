@@ -21,12 +21,12 @@ const ChatScreen = (props) => {
   return (
     <View style={{ flex: 1, justifyContent: 'space-between', backgroundColor: '#f2f2f2' }}>
       <View style={{ width: '100%', marginTop: 55 }}>
-        <Text style={{ padding: 15 }}>Hello {props.pseudo}</Text>
         {
           listMessage.map((item, i) => (
             <ListItem key={i} bottomDivider style={{ width: '100%' }}>
               <ListItem.Content>
-                <ListItem.Title>{item}</ListItem.Title>
+                <ListItem.Title>{item.message}</ListItem.Title>
+                <ListItem.Subtitle style={{color:'grey'}}>{item.pseudo}</ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
           ))
@@ -55,7 +55,7 @@ const ChatScreen = (props) => {
             backgroundColor: '#da5951'
           }}
           onPress={() => {
-            socket.emit("sendMessage", currentMessage)
+            socket.emit("sendMessage", { message: currentMessage, pseudo: props.pseudo })
             setCurrentMessage('')
           }}
         />

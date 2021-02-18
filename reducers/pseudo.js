@@ -1,9 +1,8 @@
-export default function (pseudoList = [], action) {
+export default function (pseudoList = '', action) {
 
   if (action.type == 'savePseudo') {
-    var pseudoListCopy = [...pseudoList]
-    pseudoListCopy.push(action.pseudo)
-    return pseudoListCopy
+    
+    return action.pseudo
 
   } else {
     return pseudoList
