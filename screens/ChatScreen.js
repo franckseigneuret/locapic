@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { ListItem, Button, Input } from 'react-native-elements';
 import { connect } from 'react-redux'
@@ -14,9 +14,11 @@ const ChatScreen = (props) => {
   const [currentMessage, setCurrentMessage] = useState('')
   const [listMessage, setListMessage] = useState([])
 
-  socket.on('sendMessageToAll', function (msg) {
-    setListMessage([...listMessage, msg])
-  })
+  useEffect(() => {
+    socket.on('sendMessageToAll', function (msg) {
+      setListMessage([...listMessage, msg])
+    })
+  }, [])
 
   return (
     <View style={{ flex: 1, justifyContent: 'space-between', backgroundColor: '#f2f2f2' }}>
@@ -26,7 +28,7 @@ const ChatScreen = (props) => {
             <ListItem key={i} bottomDivider style={{ width: '100%' }}>
               <ListItem.Content>
                 <ListItem.Title>{item.message}</ListItem.Title>
-                <ListItem.Subtitle style={{color:'grey'}}>{item.pseudo}</ListItem.Subtitle>
+                <ListItem.Subtitle style={{ color: 'grey' }}>{item.pseudo}</ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
           ))
