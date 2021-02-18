@@ -15,6 +15,7 @@ const ChatScreen = (props) => {
   const [listMessage, setListMessage] = useState([])
 
   useEffect(() => {
+    socket.off() // désactive la précédente écoute
     socket.on('sendMessageToAll', function (msg) {
       setListMessage([...listMessage, msg])
     })
